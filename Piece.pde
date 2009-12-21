@@ -17,16 +17,9 @@ abstract class Piece {
   
   Piece() {
     line = 0;
-    position = 3; // TODO this is not a constant
+    position = getSpawnPosition();
     alive = true;
     angle = ANGLE_0;
-  }
-  
-  Piece(int line, int position, int angle) {
-    this.line = line;
-    this.position = position;
-    this.angle = angle;
-    this.alive = true;
   }
   
   void fall() {
@@ -67,8 +60,43 @@ abstract class Piece {
     this.angle = angle;
   }
   
-  abstract int getWidth();
-  abstract int getHeight();
+  int getWidth() {
+    int width = 0;
+    
+    switch (angle) {
+      case ANGLE_0:
+      case ANGLE_180:
+        width = 3;
+        break;
+      case ANGLE_90:
+      case ANGLE_270:
+        width = 2;
+        break;
+    }
+    
+    return width;
+  }
+  
+  int getHeight() {
+    int height = 0;
+    
+    switch (angle) {
+      case ANGLE_0:
+      case ANGLE_180:
+        height = 2;
+        break;
+      case ANGLE_90:
+      case ANGLE_270:
+        height = 3;
+        break;
+    }
+    
+    return height;
+  }
+  
+  int getSpawnPosition() {
+    return 4;
+  }
   
   boolean at(int row, int col) {
     switch (angle) {

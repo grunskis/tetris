@@ -13,9 +13,9 @@ boolean GAMEOVER;
 int score;
 
 void setup() {
-  size(201, 301);
+  size(201, 401);
   
-  grid = new Grid(10, 15);
+  grid = new Grid(10, 20);
   
   currentPiece = randomPiece();
   

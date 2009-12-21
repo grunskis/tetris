@@ -4,12 +4,12 @@ class Cell {
 
   boolean on, permanent;
 
-  Cell(float x, float y, float w, float h, boolean on) {
+  Cell(float x, float y, float w, float h) {
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
-    this.on = on;
+    this.on = false;
     this.permanent = false;
   }
   
@@ -36,13 +36,13 @@ class Cell {
     if (permanent) {
       fill(128);
     } else {
-      if (this.on) {
+      if (on) {
         fill(255);
       } else {
         fill(0);
       }
     }
     
-    rect(x,y,w,h); 
+    rect(x, y, w, h); 
   }
 }

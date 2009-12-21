@@ -48,4 +48,8 @@ class I extends Piece {
     
     return height;
   }
+  
+  int getSpawnPosition() {
+    return 3;
+  }
 }

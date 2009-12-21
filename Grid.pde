@@ -8,7 +8,7 @@ class Grid {
     
     for (int i = 0; i < cols; i++) {
       for (int j = 0; j < rows; j++) {
-        cells[i][j] = new Cell(i*20, j*20, 20, 20, false);
+        cells[i][j] = new Cell(i*20, j*20, 20, 20);
       }
     }
     
@@ -36,9 +36,7 @@ class Grid {
             return false;
           }
           
-          //if (cells[col][row].isPermanent() == false) {
-            cells[col][row].turnOn();
-          //}
+          cells[col][row].turnOn();
         }
       }
     }

@@ -20,8 +20,4 @@ class O extends Piece {
   int getHeight() {
     return 2;
   }
-  
-  char getType() {
-    return 'O';
-  }
 }
