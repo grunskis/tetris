@@ -17,7 +17,7 @@ abstract class Piece {
   
   Piece() {
     line = 0;
-    position = 3; // this should be done by grid.place
+    position = 3; // TODO this is not a constant
     alive = true;
     angle = ANGLE_0;
   }
@@ -26,7 +26,7 @@ abstract class Piece {
     this.line = line;
     this.position = position;
     this.angle = angle;
-    alive = true;
+    this.alive = true;
   }
   
   void fall() {
@@ -51,10 +51,6 @@ abstract class Piece {
     return (alive == false);
   }
   
-  int getLine() {
-    return line;
-  }
-  
   void die() {
     alive = false;
   }
@@ -69,14 +65,6 @@ abstract class Piece {
   
   void setAngle(int angle) {
     this.angle = angle;
-  }
-  
-  int preRotate() {
-    if (angle == ANGLE_270) {
-      return ANGLE_0;
-    } else {
-      return (angle + 1);
-    }
   }
   
   abstract int getWidth();
@@ -99,26 +87,4 @@ abstract class Piece {
  
     return false;
   }
-  
-  boolean atAngle(int row, int col, int a) {
-    switch (a) {
-      case ANGLE_0:
-        return piece[row][col] == 1;
-        
-      case ANGLE_90:
-        return piece90[row][col] == 1;
-
-      case ANGLE_180:
-        return piece180[row][col] == 1;
-        
-      case ANGLE_270:
-        return piece270[row][col] == 1;
-    }   
- 
-    return false;
-  }
-  
-  //Piece copy() {
-    //return new Piece(this.line, this.position, this.angle);
-  //}
 }
