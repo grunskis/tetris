@@ -57,21 +57,11 @@ class Grid {
       }
     }
   }
-
-  private int getPieceHeightAt(Piece piece, int col) {
-    for (int i = piece.getHeight()-1; i >= 0; i--) {
-      if (piece.at(i, col)) {
-        return i;
-      }
-    }
-    
-    return 0;
-  }
-  
+ 
   boolean canFall(Piece piece) {
     for (int w = 0; w < piece.getWidth(); w++) {
       int checkCol = piece.position + w;
-      int checkLine = piece.line + getPieceHeightAt(piece, w) + 1;
+      int checkLine = piece.line + piece.getHeightAt(w) + 1;
       
       if (checkLine >= this.rows) {
         return false;
@@ -137,17 +127,7 @@ class Grid {
     
     return linesCleared.size();
   }
-
-  private int getPieceWidthAtFromRight(Piece piece, int row) {
-    for (int i = piece.getWidth()-1; i >= 0; i--) {
-      if (piece.at(row, i)) {
-        return i;
-      }
-    }
-    
-    return 0;
-  }
-  
+ 
   boolean canMoveRight(Piece piece) {
     if (cols - piece.getWidth() - piece.position <= 0) {
       return false;
@@ -155,7 +135,7 @@ class Grid {
     
     for (int h = 0; h < piece.getHeight(); h++) {
       int checkRow = piece.line + h;
-      int checkCol = piece.position + getPieceWidthAtFromRight(piece, h) + 1;
+      int checkCol = piece.position + piece.getWidthAtFromRight(h) + 1;
       
       if (cells[checkCol][checkRow].isPermanent()) {
         return false;
@@ -164,17 +144,7 @@ class Grid {
     
     return true;
   }
-
-  private int getPieceWidthAtFromLeft(Piece piece, int row) {
-    for (int i = 0; i < piece.getWidth(); i++) {
-      if (piece.at(row, i)) {
-        return i;
-      }
-    }
-    
-    return piece.getWidth()-1;
-  }
-  
+ 
   boolean canMoveLeft(Piece piece) {
     if (piece.position <= 0) {
       return false;
@@ -182,7 +152,7 @@ class Grid {
   
     for (int h = 0; h < piece.getHeight(); h++) {
       int checkRow = piece.line + h;
-      int checkCol = piece.position + getPieceWidthAtFromLeft(piece, h) - 1;
+      int checkCol = piece.position + piece.getWidthAtFromLeft(h) - 1;
       
       if (cells[checkCol][checkRow].isPermanent()) {
         return false;

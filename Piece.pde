@@ -115,4 +115,34 @@ abstract class Piece {
  
     return false;
   }
+  
+  private int getHeightAt(int col) {
+    for (int i = getHeight()-1; i >= 0; i--) {
+      if (at(i, col)) {
+        return i;
+      }
+    }
+    
+    return 0;
+  }
+ 
+  private int getWidthAtFromRight(int row) {
+    for (int i = getWidth()-1; i >= 0; i--) {
+      if (at(row, i)) {
+        return i;
+      }
+    }
+    
+    return 0;
+  }
+  
+  private int getWidthAtFromLeft(int row) {
+    for (int i = 0; i < getWidth(); i++) {
+      if (at(row, i)) {
+        return i;
+      }
+    }
+    
+    return getWidth()-1;
+  }
 }
