@@ -31,7 +31,7 @@ class Cell {
   }
   
   void display() {
-    stroke(255);
+    stroke(0);
 
     if (permanent) {
       fill(128);
