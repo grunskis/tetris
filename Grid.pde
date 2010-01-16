@@ -193,8 +193,6 @@ class Grid {
   }
   
   void drop(Piece piece) {
-    int prevRow = piece.line;
-    
     for (int row = 0; row < this.rows; row++) {
       piece.line = row;
 

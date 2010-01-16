@@ -7,8 +7,9 @@ float before, now;
 int speed;
 
 boolean GAMEOVER;
+boolean mustDie;
 
-int score;
+int linesCleared, piecesPlayed;
 
 void setup() {
   size(201, 401);
@@ -21,7 +22,8 @@ void setup() {
   
   GAMEOVER = false;
 
-  score = 0;
+  linesCleared = 0;
+  piecesPlayed = 1;
   
   before = 0;
 }
@@ -33,29 +35,38 @@ void draw() {
     fill(255);
     textFont(createFont("Helvetica", 24));
     text("GAME OVER", 30, 50);
-    text("SCORE: " + score, 40, 100);
+    textFont(createFont("Helvetica", 16));
+    text("PIECES PLAYED: " + piecesPlayed, 30, 100);
+    text("LINES CLEARED: " + linesCleared, 30, 130);
     return;
   }
-  
-  if (currentPiece.isDead()) {
-    currentPiece = randomPiece();
-  }
 
+  grid.clear();
   if (grid.place(currentPiece) == false) {
       GAMEOVER = true;
   }
   grid.draw();
   
   if (step()) {
-    grid.clear();
-    
     if (grid.canFall(currentPiece)) {
       currentPiece.fall();
     } else {
-      grid.die(currentPiece);
+      mustDie = true;
     }
+  }
+  
+  if (mustDie) {
+    grid.die(currentPiece);
     
-    score += grid.removeDeadLines();
+    linesCleared += grid.removeDeadLines();
+    
+    mustDie = false;
+  }
+  
+  if (currentPiece.isDead()) {
+    currentPiece = randomPiece();
+    
+    piecesPlayed++;
   }
 }
 
@@ -87,6 +98,7 @@ void keyPressed() {
       case UP:
         // hard drop
         grid.drop(currentPiece);
+        mustDie = true;
         break;
         
       case DOWN:
@@ -94,8 +106,6 @@ void keyPressed() {
         speed = 50;
         break;
     }
-    
-    grid.clear();
   }
 }
 
