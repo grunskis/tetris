@@ -48,8 +48,8 @@ void draw() {
   grid.draw();
   
   if (step()) {
-    if (grid.canFall(currentPiece)) {
-      currentPiece.fall();
+    if (grid.canMoveDown(currentPiece)) {
+      currentPiece.moveDown();
     } else {
       mustDie = true;
     }
@@ -79,13 +79,13 @@ void keyPressed() {
     switch (keyCode) {
       case RIGHT:
         if (grid.canMoveRight(currentPiece)) {
-          currentPiece.right();
+          currentPiece.moveRight();
         }
         break;
         
       case LEFT:
         if (grid.canMoveLeft(currentPiece)) {
-          currentPiece.left();
+          currentPiece.moveLeft();
         }
         break;
         

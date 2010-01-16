@@ -1,18 +1,27 @@
 class I extends Piece {
- /*
-       1
-  1111 1
-       1
-       1
- */
-  
   I() {
     super();
     
-    piece = new byte[][] {{1, 1, 1, 1}};
-    piece90 = new byte[][] {{1}, {1}, {1}, {1}};
-    piece180 = piece;
-    piece270 = piece90;
+    piece = new byte[][][] {
+      {
+        {1, 1, 1, 1}
+      },
+      {
+        {1},
+        {1},
+        {1},
+        {1}
+      },
+      {
+        {1, 1, 1, 1}
+      },
+      {
+        {1},
+        {1},
+        {1},
+        {1}
+      }
+    };
   }
   
   int getWidth() {
@@ -53,3 +62,4 @@ class I extends Piece {
     return 3;
   }
 }
+

@@ -1,16 +1,25 @@
-class O extends Piece {
- /*
-  11 11
-  11 11
- */
-  
+class O extends Piece {  
   O() {
     super();
     
-    piece = new byte[][] {{1, 1}, {1, 1}};
-    piece90 = piece;
-    piece180 = piece;
-    piece270 = piece;
+    piece = new byte[][][] {
+      {
+        {1, 1}, 
+        {1, 1}
+      },
+      {
+        {1, 1}, 
+        {1, 1}
+      },
+      {
+        {1, 1}, 
+        {1, 1}
+      },
+      {
+        {1, 1}, 
+        {1, 1}
+      }
+    };
   }
   
   int getWidth() {

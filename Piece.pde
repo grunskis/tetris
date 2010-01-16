@@ -1,10 +1,7 @@
 abstract class Piece {
-  int line, position;
+  int row, column;
   
-  byte[][] piece;
-  byte[][] piece90;
-  byte[][] piece180;
-  byte[][] piece270;
+  byte[][][] piece;
   
   boolean alive;
   
@@ -16,27 +13,27 @@ abstract class Piece {
   int angle;
   
   Piece() {
-    line = 0;
-    position = getSpawnPosition();
+    row = 0;
+    column = getSpawnPosition();
     alive = true;
     angle = ANGLE_0;
   }
   
-  void fall() {
+  void moveDown() {
     if (alive) {
-      line += 1;
+      row += 1;
     }
   }
   
-  void left() {
+  void moveLeft() {
     if (alive) {
-      position -= 1;
+      column -= 1;
     }
   }
   
-  void right() {
+  void moveRight() {
     if (alive) {
-       position += 1;
+       column += 1;
     }
   }
   
@@ -99,50 +96,6 @@ abstract class Piece {
   }
   
   boolean at(int row, int col) {
-    switch (angle) {
-      case ANGLE_0:
-        return piece[row][col] == 1;
-        
-      case ANGLE_90:
-        return piece90[row][col] == 1;
-
-      case ANGLE_180:
-        return piece180[row][col] == 1;
-        
-      case ANGLE_270:
-        return piece270[row][col] == 1;
-    }   
- 
-    return false;
-  }
-  
-  private int getHeightAt(int col) {
-    for (int i = getHeight()-1; i >= 0; i--) {
-      if (at(i, col)) {
-        return i;
-      }
-    }
-    
-    return 0;
-  }
- 
-  private int getWidthAtFromRight(int row) {
-    for (int i = getWidth()-1; i >= 0; i--) {
-      if (at(row, i)) {
-        return i;
-      }
-    }
-    
-    return 0;
-  }
-  
-  private int getWidthAtFromLeft(int row) {
-    for (int i = 0; i < getWidth(); i++) {
-      if (at(row, i)) {
-        return i;
-      }
-    }
-    
-    return getWidth()-1;
+    return piece[angle][row][col] == 1;
   }
 }

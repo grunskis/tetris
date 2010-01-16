@@ -28,8 +28,8 @@ class Grid {
     for (int h = 0; h < piece.getHeight(); h++) {
       for (int w = 0; w < piece.getWidth(); w++) { 
         if (piece.at(h, w)) {
-          int row = piece.line + h;
-          int col = piece.position + w;
+          int row = piece.row + h;
+          int col = piece.column + w;
           
           if (cells[col][row].isPermanent()) {
             // GAME OVER
@@ -50,29 +50,12 @@ class Grid {
     for (int row = piece.getHeight()-1; row >= 0; row--) {
       for (int col = 0; col < piece.getWidth(); col++) {
         if (piece.at(row, col)) {
-          int position = col + piece.position;
+          int position = col + piece.column;
           
-          cells[position][row + piece.line].setPermanent(true);
+          cells[position][row + piece.row].setPermanent(true);
         }
       }
     }
-  }
- 
-  boolean canFall(Piece piece) {
-    for (int w = 0; w < piece.getWidth(); w++) {
-      int checkCol = piece.position + w;
-      int checkLine = piece.line + piece.getHeightAt(w) + 1;
-      
-      if (checkLine >= this.rows) {
-        return false;
-      }
-      
-      if (cells[checkCol][checkLine].isPermanent()) {
-        return false;
-      }
-    }
-    
-    return true;
   }
   
   void clear() {
@@ -127,41 +110,40 @@ class Grid {
     
     return linesCleared.size();
   }
+  
+  boolean canMoveDown(Piece piece) {
+    int row = piece.row;
+    
+    piece.moveDown();
+    
+    boolean can = grid.positionValid(piece);
+    
+    piece.row = row;
+    return can;
+  } 
  
   boolean canMoveRight(Piece piece) {
-    if (cols - piece.getWidth() - piece.position <= 0) {
-      return false;
-    }
+    int position = piece.column;
     
-    for (int h = 0; h < piece.getHeight(); h++) {
-      int checkRow = piece.line + h;
-      int checkCol = piece.position + piece.getWidthAtFromRight(h) + 1;
-      
-      if (cells[checkCol][checkRow].isPermanent()) {
-        return false;
-      }
-    }
+    piece.moveRight();
     
-    return true;
+    boolean can = grid.positionValid(piece);
+    
+    piece.column = position;
+    return can;
   }
  
   boolean canMoveLeft(Piece piece) {
-    if (piece.position <= 0) {
-      return false;
-    }  
-  
-    for (int h = 0; h < piece.getHeight(); h++) {
-      int checkRow = piece.line + h;
-      int checkCol = piece.position + piece.getWidthAtFromLeft(h) - 1;
-      
-      if (cells[checkCol][checkRow].isPermanent()) {
-        return false;
-      }
-    }
+    int position = piece.column;
     
-    return true;
+    piece.moveLeft();
+    
+    boolean can = grid.positionValid(piece);
+    
+    piece.column = position;
+    return can;
   }
-  
+
   boolean canRotate(Piece piece) {
     int angle = piece.angle; // save piece angle
     
@@ -178,10 +160,10 @@ class Grid {
     for (int h = 0; h < piece.getHeight(); h++) {
       for (int w = 0; w < piece.getWidth(); w++) {
         if (piece.at(h, w)) {
-          int row = piece.line + h;
-          int col = piece.position + w;
+          int row = piece.row + h;
+          int col = piece.column + w;
           
-          if (col >= this.cols || row >= this.rows || cells[col][row].isPermanent()) {
+          if (col < 0 || col >= this.cols || row >= this.rows || cells[col][row].isPermanent()) {
             return false; // piece position is not valid
           }
         }
@@ -194,10 +176,10 @@ class Grid {
   
   void drop(Piece piece) {
     for (int row = 0; row < this.rows; row++) {
-      piece.line = row;
+      piece.row = row;
 
       if (!positionValid(piece)) {
-        piece.line--;
+        piece.row--;
         return;
       }
     }
