@@ -84,8 +84,13 @@ void keyPressed() {
         }
         break;
         
+      case UP:
+        // hard drop
+        grid.drop(currentPiece);
+        break;
+        
       case DOWN:
-        stepKey = true; // DEBUG
+        // soft drop
         speed = 50;
         break;
     }

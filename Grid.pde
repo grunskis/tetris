@@ -163,10 +163,18 @@ class Grid {
   }
   
   boolean canRotate(Piece piece) {
-    int angle = piece.angle;
+    int angle = piece.angle; // save piece angle
     
     piece.rotate();
     
+    // check if current position is valid
+    boolean valid = positionValid(piece);
+    
+    piece.setAngle(angle); // restore old angle
+    return valid;
+  }
+  
+  boolean positionValid(Piece piece) {
     for (int h = 0; h < piece.getHeight(); h++) {
       for (int w = 0; w < piece.getWidth(); w++) {
         if (piece.at(h, w)) {
@@ -174,15 +182,26 @@ class Grid {
           int col = piece.position + w;
           
           if (col >= this.cols || row >= this.rows || cells[col][row].isPermanent()) {
-            // rotation not possible
-            piece.setAngle(angle); // restore old angle
-            return false;
+            return false; // piece position is not valid
           }
         }
       }
     }
     
-    piece.setAngle(angle); // restore old angle
+    // piece position is valid
     return true;
+  }
+  
+  void drop(Piece piece) {
+    int prevRow = piece.line;
+    
+    for (int row = 0; row < this.rows; row++) {
+      piece.line = row;
+
+      if (!positionValid(piece)) {
+        piece.line--;
+        return;
+      }
+    }
   }
 }
