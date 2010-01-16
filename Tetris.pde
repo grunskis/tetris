@@ -4,8 +4,6 @@ Grid grid;
 
 float before, now;
 
-boolean stepKey; // DEBUG
-
 int speed;
 
 boolean GAMEOVER;
@@ -61,9 +59,6 @@ void draw() {
   }
 }
 
-void play() {
-}
-
 void keyPressed() {
   if (GAMEOVER) {
     return;
@@ -108,17 +103,6 @@ boolean step() {
   
   if (now - before > speed) {
     before = now;
-    
-    return true;
-  }
-  
-  return false;
-}
-
-// DEBUG
-boolean stepKey() {
-  if (stepKey) {
-    stepKey = false;
     
     return true;
   }
