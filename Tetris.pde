@@ -34,8 +34,8 @@ void setup() {
   
   m.setNextPiece(nextPiece);
 
-  smallFont = createFont("Silkscreen", 24);
-  largeFont = createFont("Silkscreen", 48);
+  smallFont = loadFont("Silkscreen-24.vlw");
+  largeFont = loadFont("Silkscreen-48.vlw");
 
   speed = 500; // level1 speed
 
