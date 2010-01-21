@@ -3,12 +3,12 @@ class Grid {
   
   int rows, cols;
   
-  Grid(int cols, int rows) {
+  Grid(int cols, int rows, int xoffset, int yoffset) {
     cells = new Cell[cols][rows];
     
     for (int i = 0; i < cols; i++) {
       for (int j = 0; j < rows; j++) {
-        cells[i][j] = new Cell(i*20, j*20, 20, 20);
+        cells[i][j] = new Cell(xoffset + i*20, yoffset + j*20, 20, 20);
       }
     }
     
