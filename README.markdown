@@ -16,3 +16,4 @@ After every 5 cleared lines you enter a new level.
 * Rotate    - CONTROL
 * Soft drop - DOWN ARROW
 * Hard drop - UP ARROW
+* Pause     - P

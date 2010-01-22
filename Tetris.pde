@@ -10,7 +10,7 @@ float before, now;
 
 int speed;
 
-boolean GAMEOVER;
+boolean GAMEOVER, PAUSE;
 boolean mustDie;
 
 int piecesPlayed;
@@ -40,6 +40,7 @@ void setup() {
   speed = 500; // level1 speed
 
   GAMEOVER = false;
+  PAUSE = false;
 
   score = 0;
   piecesPlayed = 1;
@@ -57,6 +58,11 @@ void setup() {
 
 void draw() {
   background(0);
+  
+  if (PAUSE) {
+    displayPauseScreen();
+    return;
+  }
 
   if (GAMEOVER) {
     fill(255);
@@ -129,35 +135,44 @@ void keyPressed() {
   }
 
   if (key == CODED) {
-    switch (keyCode) {
-    case RIGHT:
-      if (grid.canMoveRight(currentPiece)) {
-        currentPiece.moveRight();
+    if (!PAUSE) {
+      switch (keyCode) {
+        case RIGHT:
+          if (grid.canMoveRight(currentPiece)) {
+            currentPiece.moveRight();
+          }
+          break;
+    
+        case LEFT:
+          if (grid.canMoveLeft(currentPiece)) {
+            currentPiece.moveLeft();
+          }
+          break;
+    
+        case CONTROL:
+          if (grid.canRotate(currentPiece)) {
+            currentPiece.rotate();
+          }
+          break;
+    
+        case UP:
+          // hard drop
+          grid.drop(currentPiece);
+          mustDie = true;
+          break;
+    
+        case DOWN:
+          // soft drop
+          speed = 50;
+          break;
       }
-      break;
-
-    case LEFT:
-      if (grid.canMoveLeft(currentPiece)) {
-        currentPiece.moveLeft();
-      }
-      break;
-
-    case CONTROL:
-      if (grid.canRotate(currentPiece)) {
-        currentPiece.rotate();
-      }
-      break;
-
-    case UP:
-      // hard drop
-      grid.drop(currentPiece);
-      mustDie = true;
-      break;
-
-    case DOWN:
-      // soft drop
-      speed = 50;
-      break;
+    }
+  } else {
+    switch (key) {
+      case 'p':
+      case 'P':
+        PAUSE = !PAUSE;
+        break;
     }
   }
 }
