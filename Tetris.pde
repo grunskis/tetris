@@ -11,7 +11,7 @@ float before, now;
 int speed;
 
 boolean GAMEOVER, PAUSE;
-boolean mustDie;
+boolean mustDie, scoreSaved;
 
 int piecesPlayed;
 
@@ -46,14 +46,20 @@ void setup() {
   piecesPlayed = 1;
   level = 1;
   
+  Score score = new Score();
+  top = score.get();
+  
+  /*
   byte topscores[] = loadBytes("lib/topscore.dat");
   if (topscores == null) {
     top = 0;
   } else {
     top = topscores[0];
-  }
+  }*/
 
   before = 0;
+  
+  scoreSaved = false;
 }
 
 void draw() {
@@ -70,9 +76,14 @@ void draw() {
     text("GAME", 130, 100);
     text("OVER", 130, 160);
     
-    if (score > top) {
-      byte[] topscore = { (byte)score }; 
-      saveBytes("lib/topscore.dat", topscore);
+    if (!scoreSaved && score >= top) {
+      Score sc = new Score(System.getProperty("user.name"), score, level, 0);
+      if (!sc.post()) {
+        // save locally
+        //byte[] topscore = { (byte)score };
+        //saveBytes("lib/topscore.dat", topscore);
+      }
+      scoreSaved = true;
     }
     
     return;
