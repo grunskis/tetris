@@ -1,6 +1,15 @@
 import com.nootropic.processing.layers.*;
+import ddf.minim.*;
 
 PAppletLayers layers;
+
+Minim minim;
+AudioSample[] sounds;
+
+final int SOUND_ROTATE = 0;
+final int SOUND_FALL = 1;
+final int SOUND_DROP = 2;
+final int SOUND_CLEAR = 3;
 
 Piece currentPiece, nextPiece;
 
@@ -23,6 +32,13 @@ void setup() {
   size(301, 401);
 
   layers = new PAppletLayers(this);
+
+  minim = new Minim(this);
+  sounds = new AudioSample[4];
+  sounds[SOUND_ROTATE] = minim.loadSample("drop.wav");
+  sounds[SOUND_FALL] = minim.loadSample("fall.wav");
+  sounds[SOUND_DROP] = minim.loadSample("rotate.wav");
+  sounds[SOUND_CLEAR] = minim.loadSample("line.wav");
 
   grid = new Grid(10, 20, 100, 0);
 
@@ -48,14 +64,6 @@ void setup() {
   
   Score score = new Score();
   top = score.get();
-  
-  /*
-  byte topscores[] = loadBytes("lib/topscore.dat");
-  if (topscores == null) {
-    top = 0;
-  } else {
-    top = topscores[0];
-  }*/
 
   before = 0;
   
@@ -79,9 +87,7 @@ void draw() {
     if (!scoreSaved && score >= top) {
       Score sc = new Score(System.getProperty("user.name"), score, level, 0);
       if (!sc.post()) {
-        // save locally
-        //byte[] topscore = { (byte)score };
-        //saveBytes("lib/topscore.dat", topscore);
+        // TODO hide TOP score
       }
       scoreSaved = true;
     }
@@ -97,6 +103,7 @@ void draw() {
 
   if (step()) {
     if (grid.canMoveDown(currentPiece)) {
+      //sounds[SOUND_FALL].trigger(); // this is too annoying
       currentPiece.moveDown();
     } 
     else {
@@ -106,11 +113,14 @@ void draw() {
 
   if (mustDie) {
     grid.die(currentPiece);
+    sounds[SOUND_DROP].trigger();
 
     int cleared = grid.removeDeadLines();
     score += cleared;
     
     if (cleared > 0) {
+      sounds[SOUND_CLEAR].trigger();
+      
       level = 1 + (score / 5);
       
       speed = 500 - ((level-1) * 20);
@@ -129,6 +139,18 @@ void draw() {
 
     piecesPlayed++;
   }
+}
+
+void stop()
+{
+  // always close Minim audio classes when you are done with them
+  sounds[SOUND_ROTATE].close();
+  sounds[SOUND_FALL].close();
+  sounds[SOUND_DROP].close();
+  sounds[SOUND_CLEAR].close();
+  minim.stop();
+  
+  super.stop();
 }
 
 void paint() {
@@ -163,6 +185,7 @@ void keyPressed() {
         case CONTROL:
           if (grid.canRotate(currentPiece)) {
             currentPiece.rotate();
+            sounds[SOUND_ROTATE].trigger();
           }
           break;
     
